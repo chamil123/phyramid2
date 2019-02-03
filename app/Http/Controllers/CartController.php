@@ -25,6 +25,7 @@ class CartController extends Controller {
     public function checkout(Request $request) {
         $orders = new orders();
         $order = orders::createOrder();
+        $orders->order_total=$request->total;
         $orders->user_id = $order->id;
         $orders->save();
         $lastid = $orders->id;
@@ -119,12 +120,15 @@ class CartController extends Controller {
 
     public function viewOrders() {
         $user_id = Auth::user()->id;
-        $orders = orders::select(\DB::raw('orders.*, SUM(orders_product.pv_value) as PV_value'))
+        
+          $orders = orders::select(\DB::raw('orders.*, SUM(dummey_pvs.pv) as PV_value'))
+
                 ->leftJoin('orders_product', 'orders_product.orders_id', '=', 'orders.id')
+                  ->leftJoin('dummey_pvs', 'orders_product.id', '=', 'dummey_pvs.orders_product_id')
                 ->groupBy('orders.id')
                 ->where('orders.user_id', '=', $user_id)
                 ->get();
-
+//
         return view('Admin.viewOrders', compact('orders'));
     }
 
@@ -133,7 +137,7 @@ class CartController extends Controller {
         $order_products = DB::table('orders_product')
                 ->join('products', 'orders_product.product_id', '=', 'products.id')
                 ->join('orders', 'orders_product.orders_id', '=', 'orders.id')
-                ->select('orders_product.*', 'products.product_name', 'orders.created_at')
+                ->select('orders_product.*', 'products.product_name', 'orders.created_at','orders.order_total')
                 ->where('orders_id', $id)
                 ->get();
         return $order_products;

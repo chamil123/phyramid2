@@ -155,6 +155,7 @@
                                     </tr>
                                     <tr class="total">
                                         <td>Total</td>
+                                    <input type="hidden" name="total" value="{{Cart::subtotal()}}"/>
                                         <td class="total-amount">Rs {{Cart::subtotal()}}</td>
                                     </tr>
                                 </table>

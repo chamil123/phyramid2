@@ -25,10 +25,10 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
+                                <th>Order Id</th>
                                 <th>Date</th>
-
                                 <th>Total</th>
-                                <th>PV value</th>
+                                <th>Total PV value</th>
                                 <th style="width:200px">Action</th>
 
                             </tr>
@@ -36,6 +36,7 @@
                         <tbody>
                             @foreach($orders as $order)
                             <tr>
+                                <td> {{$order->id}}</td>
                                 <td> {{$order->created_at}}</td>
                                 <td>{{$order->total}}</td>
 
@@ -140,8 +141,8 @@
             url: "{{url('orders')}}" + "/" + id, //this is your uri
                     type: 'get', //this is your method
                     success: function (data) {
-                        
-                       // console.log(data);
+
+                     console.log(data);
 
                     $('#exampleModal').modal("show");
                             var table = '<table class="table table-striped table-responsive">';
@@ -154,10 +155,10 @@
 
                             table += '</tr>'
                             for (var i in data) {
-                    $('#order_id').html(data[i].id);
+                            $('#order_id').html(data[i].orders_id);
                             $('#dates').html(data[i].created_at);
-                            $('#total').html(data[i].total);
-                            $('#subtotal').html(data[i].total);
+                            $('#total').html(data[i].order_total);
+                            $('#subtotal').html(data[i].order_total);
                             name = data[i].product_name;
                             image = data[i].image;
                             total = data[i].total;
