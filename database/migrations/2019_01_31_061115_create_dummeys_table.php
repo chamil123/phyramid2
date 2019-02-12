@@ -16,7 +16,10 @@ class CreateDummeysTable extends Migration {
             $table->increments('id');
             $table->string('dummey_name');
             $table->integer('placement_id');
+            $table->integer('bind_id');
             $table->integer('user_id');
+            $table->double('daily_pv_tot');
+            $table->string('side');
             $table->timestamps();
         });
     }

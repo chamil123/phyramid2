@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePartnersTable extends Migration {
+class CreateDummeyBindsTable extends Migration {
 
     /**
      * Run the migrations.
@@ -12,13 +12,11 @@ class CreatePartnersTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('partners', function (Blueprint $table) {
+        Schema::create('dummey_binds', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nic_dummey');
+            $table->integer('nic_dummey_id');
             $table->string('side');
-            $table->integer('member_id');
-            $table->integer('user_id');
-            $table->integer('status');
+            $table->integer('partner_dummey_id');
             $table->timestamps();
         });
     }
@@ -29,7 +27,7 @@ class CreatePartnersTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('partners');
+        Schema::dropIfExists('dummey_binds');
     }
 
 }

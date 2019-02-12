@@ -33,17 +33,26 @@ class DatabaseSeeder extends Seeder {
         DB::table('dummeys')->insert([
             'dummey_name' => '123456789V_PL1_A',
             'placement_id' => 1,
+            'bind_id' => 1,
             'user_id' => 1,
+            'daily_pv_tot' => 0,
+            'side' => 'Center',
         ]);
         DB::table('dummeys')->insert([
             'dummey_name' => '123456789V_PL1_B',
             'placement_id' => 1,
+            'bind_id' => 1,
             'user_id' => 1,
+            'daily_pv_tot' => 0,
+            'side' => 'Left',
         ]);
         DB::table('dummeys')->insert([
             'dummey_name' => '123456789V_PL1_C',
             'placement_id' => 1,
+            'bind_id' => 1,
             'user_id' => 1,
+            'daily_pv_tot' => 0,
+            'side' => 'Right',
         ]);
         DB::table('categories')->insert([
             'cat_name' => 'ELECTRIC ITEMS',
@@ -112,6 +121,12 @@ class DatabaseSeeder extends Seeder {
             'product_status' => 1,
             'cat_id' => 1,
             'product_image' => "LG-GS-X6011NS-Refrigerator-300x300.jpg",
+        ]);
+        DB::table('sides')->insert([
+            'name' => 'Left',
+        ]);
+        DB::table('sides')->insert([
+            'name' => 'Right',
         ]);
     }
 

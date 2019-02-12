@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\dummey;
+use DB;
+use App\dummey_bind;
 
 class RegisterController extends Controller {
     /*
@@ -82,30 +84,59 @@ use RegistersUsers;
         ]);
 
         $last_id = $user->id;
-
+        $last_dum_id = 0;
         for ($i = 0; $i < 3; $i++) {
             $dummey = new dummey();
             if ($i == 0) {
+                //  $ss_id=DB::getPdo()->lastInsertId();
                 $dummey->dummey_name = $data['user_nic'] . "_PL1_A";
+                $dummey->placement_id = 1;
+                $dummey->user_id = $last_id;
+                $dummey->bind_id = 0;
+                $dummey->daily_pv_tot = 0;
+                $dummey->side = 'Center';
+                $dummey->save();
+                $last_dum_id = $dummey->id;
             } else if ($i == 1) {
                 $dummey->dummey_name = $data['user_nic'] . "_PL1_B";
+                $dummey->placement_id = 1;
+                $dummey->user_id = $last_id;
+                $dummey->bind_id = $last_dum_id;
+                $dummey->daily_pv_tot = 0;
+                $dummey->side = 'Left';
+                $dummey->save();
             } else {
                 $dummey->dummey_name = $data['user_nic'] . "_PL1_C";
+                $dummey->placement_id = 1;
+                $dummey->user_id = $last_id;
+                $dummey->bind_id = $last_dum_id;
+                $dummey->daily_pv_tot = 0;
+                $dummey->side = 'Right';
+                $dummey->save();
             }
-            $dummey->placement_id = 1;
-            $dummey->user_id = $last_id;
-            $dummey->save();
         }
         $partner = new partner;
         $partner->nic_dummey = $data['nic_dummey'];
         $partner->side = $data['side'];
         $partner->member_id = $data['user_id'];
-        $partner->partner_id = $last_id;
+        $partner->user_id = $last_id;
         $partner->status = 1;
         $partner->save();
-        return $user;
-    }
 
-   
+        $dummey_orders = DB::table('dummeys')
+                ->select('dummeys.*')
+                ->where('user_id', $data['user_id'])
+                ->get();
+
+        foreach ($dummey_orders as $dummey_order) {
+            $dummey_bind = new dummey_bind();
+            $dummey_bind->nic_dummey_id = 1;
+            $dummey_bind->side = "Left";
+            $dummey_bind->partner_dummey_id = 2;
+            $dummey_bind->save();
+        }
+
+        return $dummey_orders;
+    }
 
 }

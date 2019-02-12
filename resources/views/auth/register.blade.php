@@ -82,9 +82,13 @@
 
                         <div class="form-group">
                             <label for="nic_dummey" class="col-md-4 col-form-label text-md-right">{{ __('Dummey NIC') }}</label>
-                            <select class="form-control" id="nic_dummey" name="nic_dummey"  required autofocus>
+                            <select class="form-control" id="nic_dummey" name="nic_dummey"  required autofocus  onchange="loadSide();"> 
+                                <option value="" >---Please Select Dummey----</option>
                                 @foreach($dummeys as $dummey)
-                                <option value="{{$dummey->id}}">{{$dummey->dummey_name}}</option>
+
+                                <option value="{{$dummey->id}}" >{{$dummey->dummey_name}}</option>
+
+
                                 @endforeach
                             </select>
 
@@ -96,30 +100,17 @@
                         </div>
                         <div class="form-group">
                             <label for="side" class="col-md-4 col-form-label text-md-right">{{ __('Side') }}</label>
-                            <select class="form-control" id="side" name="side"  required autofocus>
-                                @foreach($sides as $side)
-
-                                @if($side->side=='Left')
-                                <option> Right</option>
-                                @elseif($side->side=='Right')
-                                <option> Left</option>
-                                @endif
-                                @endforeach
-                                @if($sides=='[]')
-                                <option>Left</option>
-                                <option>Right</option>
-                                @endif
-                            </select>
-                            @if ($errors->has('side'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('side') }}</strong>
-                            </span>
-                            @endif
+                            <div id="sss">
+                                <select class="form-control{{ $errors->has('side') ? ' is-invalid' : '' }}" id="side" name="side"  required autofocus>
+                                 
+                                </select>
+                            </div>
                             @if ($errors->has('side'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('side') }}</strong>
                             </span>
                             @endif
+
                         </div>
 
                         <div class="form-group">
@@ -261,4 +252,54 @@
         </div>
     </div>
 </div>-->
+
+@endsection
+@section('script')
+<script>
+    function loadSide() {
+        var dummey_id = $('#nic_dummey').val();
+
+
+
+        $.ajax({
+            url: "dumeySide/" + dummey_id, //this is your uri
+            type: 'get', //this is your method
+            success: function (data) {
+                var option = '<select class="form-control" id="side" name="side"  required autofocus>';
+           
+                var val = 0;
+                var val2 = 0;
+                for (var i in data) {
+
+                    if (data[i].side == "Left") {
+                        val = 1;
+                    } else if (data[i].side == "Right") {
+                        val2 = 1;
+                    }
+                }
+                if (val == 1 && val2 == 1) {
+                    option += '</select>'
+                    $('#sss').html(option);
+                } else if (val == 1 && val2 != 1) {
+                    option += '<option value="Right">Right</option>'
+                    option += '</select>'
+                    $('#sss').html(option);
+                } else if (val != 1 && val2 == 1) {
+                    option += '<option value="Left">Left</option>'
+                    option += '</select>'
+                    $('#sss').html(option);
+                }
+                else if (val == 0 && val2 == 0) {
+                    option += '<option value="Left">Left</option>'
+                    option += '<option value="Right">Right</option>'
+                    option += '</select>'
+                    $('#sss').html(option);
+
+                }
+            }
+
+        });
+    }
+
+</script>
 @endsection

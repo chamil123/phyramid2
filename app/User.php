@@ -31,5 +31,8 @@ class User extends Authenticatable {
     public function orders() {
         return $this->hasMany(orders::class);
     }
+    public function partner(){
+        return $this->hasOne(partner::class);
+    }
 
 }

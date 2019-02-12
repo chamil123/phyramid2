@@ -26,7 +26,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('member', 'MemberController');
+//    Route::resource('member', 'MemberController');
     Route::resource('product', 'ProductController');
     Route::post('product/{id}', 'ProductController@update');
 
@@ -46,3 +46,9 @@ Route::get('viewdummey_pv/{id}', 'cartController@viewDummeyPv');
 Route::get('dummey_pv_delete/{id}', 'cartController@delete_pv');
 Route::get('/product-details/{id}', 'ProductController@productDetails');
 //https://github.com/bumbummen99/LaravelShoppingcart#usage
+
+Route::get('testM', 'TestController@show');
+Route::get('test2', 'TestController@test');
+
+Route::get('dumeySide/{id}', 'CartController@getSide');
+
